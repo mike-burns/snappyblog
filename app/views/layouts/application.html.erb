@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Snappyblog</title>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <%= yield %>
+
+    <div id="debug"></div>
+    <div id="msg"></div>
+    <%= javascript_tag do %>
+      var connectionId;
+      $(document).ready(function(){
+        function debug(str){ $("#debug").append("<p>"+str+"</p>"); };
+        function msg(str) { $("#msg").append("<p>"+str+"</p>"); };
+        function handle(payload) {
+          alert(payload);
+          if (payload[0] == "article_id") {
+            window.location.reload();
+          }
+        };
+
+        ws = new WebSocket("ws://localhost:8080/");
+        ws.onmessage = function(evt) {
+          msg(evt.data);
+          var j = JSON.parse(evt.data);
+          handle(j);
+        };
+        ws.onclose = function() { debug("socket closed"); };
+        ws.onopen = function() {
+          debug("connected...");
+          <% if session[:connection_id] %>
+            ws.send(<%=raw %{["register_as",#{session[:connection_id].inspect}]}.to_json %>);
+          <% end %>
+        };
+      });
+    <% end %>
+  </body>
+</html>
