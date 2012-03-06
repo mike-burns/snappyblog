@@ -30,3 +30,16 @@ end
 After('@monitor-announcements') do
   Announcer.instance.delete_observer(@monitor_announcer)
 end
+
+def wait_for_key(key, countdown = 10)
+  if @monitor_announcer.nil?
+    raise "must use @monitor-announcements to use #wait_for_key"
+  end
+
+  if countdown.zero?
+    raise "The key #{key} was not announced."
+  elsif !@monitor_announcer.has_announcement?(key)
+    sleep 1
+    wait_for_key(key, countdown-1)
+  end
+end

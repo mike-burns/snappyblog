@@ -1,8 +1,6 @@
-Then /^I see the article titled "([^"]*)"$/ do |article_title|
-  article = Article.find_by_title!(article_title)
-
-  page.should have_content(article.title)
-  page.should have_content(article.body)
+Then /^I see that I can jump to an article$/ do
+  wait_for_key(:article_id)
+  page.should have_content('Jump to it')
 end
 
 Then /^the article titled "([^"]+)" is announced$/ do |article_title|
