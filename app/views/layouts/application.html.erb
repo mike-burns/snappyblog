@@ -9,10 +9,6 @@
   <body>
     <%= render partial: 'shared/event_alerts' %>
     <%= yield %>
-    <%= javascript_tag do %>
-      $(document).ready(function(){
-        ws_register(<%=raw session[:connection_id].to_json %>, handle);
-      });
-    <% end %>
+    <%= ws_register %>
   </body>
 </html>
