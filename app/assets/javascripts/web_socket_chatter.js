@@ -1,15 +1,18 @@
 function ws_register(connectionId, handler) {
-  ws = new WebSocket("ws://localhost:8080/");
+  if (typeof MozWebSocket == "undefined") {
+    ws = new WebSocket("ws://localhost:8080/");
+  } else {
+    ws = new MozWebSocket("ws://localhost:8080/");
+  }
 
   ws.onmessage = function(evt) {
     var j = JSON.parse(evt.data);
     handler(j);
   };
 
-  ws.onclose = function() { console.log("closed"); };
+  ws.onclose = function() { };
 
   ws.onopen = function() {
-    console.log("connected");
     ws.send('["register_as", "' + connectionId + '"]');
   };
 }

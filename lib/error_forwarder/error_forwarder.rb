@@ -7,12 +7,12 @@ EventMachine.run do
 
   EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080) do |ws|
     ws.onopen do
-      connection_id = -1
+      connection_id = "-1"
 
       sid = @channel.subscribe do |msg|
         relay = JSON.parse(msg)
         recipient_id, payload = relay
-        if connection_id.to_i == recipient_id.to_i
+        if connection_id == recipient_id
           ws.send payload.to_json
         end
       end
@@ -25,7 +25,6 @@ EventMachine.run do
         parsed = JSON.parse(msg)
         if parsed.first == "register_as"
           connection_id = parsed[1]
-        else
           @channel.push(msg)
         end
       end

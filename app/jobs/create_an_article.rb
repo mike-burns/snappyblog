@@ -1,4 +1,4 @@
-require 'web_socket'
+require 'announcer'
 
 class CreateAnArticle
   @queue = :article
@@ -6,7 +6,6 @@ class CreateAnArticle
   def self.perform(connection_id, web_params)
     article = Article.create(web_params)
 
-    client = WebSocket.new('ws://localhost:8080/')
-    client.send(%{["#{connection_id}", ["article_id", #{article.id}]]})
+    Announcer.announce!(connection_id, [:article_id, article.id])
   end
 end
