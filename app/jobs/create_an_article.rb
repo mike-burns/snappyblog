@@ -3,9 +3,9 @@ require 'announcer'
 class CreateAnArticle
   @queue = :article
 
-  def self.perform(connection_id, web_params)
+  def self.perform(announcer, web_params)
     article = Article.create(web_params)
 
-    Announcer.announce!(connection_id, [:article_id, article.id])
+    announcer.key(:article_id).payload(article.id).announce
   end
 end

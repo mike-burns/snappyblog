@@ -6,11 +6,11 @@ class Announcer
   include Singleton
   include Observable
 
-  def self.announce!(*args)
-    instance.announce!(*args)
+  def self.announce(*args)
+    instance.announce(*args)
   end
 
-  def announce!(connection_id, payload)
+  def announce(connection_id, payload)
     changed
     notify_observers(connection_id, payload)
   end

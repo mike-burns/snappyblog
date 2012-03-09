@@ -1,9 +1,3 @@
-class ImmediateQueueRunner
-  def enqueue(constant, *args)
-    constant.perform(*args)
-  end
-end
-
 class FiveSecondQueueRunner
   def enqueue(constant, *args)
     Thread.new do
@@ -14,12 +8,11 @@ class FiveSecondQueueRunner
 end
 
 Before('@circumvent-resque') do
-  @prior_enqueuer = AppropriateQueue.enqueuer
-  AppropriateQueue.enqueuer = ImmediateQueueRunner.new
+  Resque.inline = true
 end
 
 After('@circumvent-resque') do
-  AppropriateQueue.enqueuer = @prior_enqueuer
+  Resque.inline = false
 end
 
 Before('@inline-resque') do
