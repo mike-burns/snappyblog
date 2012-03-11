@@ -1,4 +1,5 @@
 require 'announcer'
+require 'active_record_marshaller'
 
 class CreateAnArticle
   @queue = :article
@@ -9,7 +10,8 @@ class CreateAnArticle
     if article.save
       announcer.key(:article_id).payload(article.id).announce
     else
-      announcer.key(:invalid_article).payload(article).announce
+      json_marshaller = ActiveRecordMarshaller.new(article)
+      announcer.key(:invalid_article).payload(json_marshaller).announce
     end
   end
 end
