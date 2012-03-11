@@ -25,4 +25,8 @@ class ActiveRecordMarshaller
       end
     end
   end
+
+  def ==(o)
+    as_json == o.as_json
+  end
 end

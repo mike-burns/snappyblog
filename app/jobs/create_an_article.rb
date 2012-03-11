@@ -1,4 +1,3 @@
-require 'announcer'
 require 'active_record_marshaller'
 
 class CreateAnArticle
