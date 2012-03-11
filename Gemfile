@@ -5,6 +5,7 @@ gem 'jquery-rails'
 gem 'resque'
 gem 'em-websocket'
 gem 'web-socket-ruby'
+gem 'dynamic_form'
 
 group :assets do
   gem 'sass-rails',   '~> 3.1.5'

@@ -1,4 +1,5 @@
 <%= form_for @article do |form| %>
+  <%= form.error_messages %>
   <p>
     <%= form.label :title %>
     <%= form.text_field :title %>

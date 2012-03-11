@@ -14,7 +14,7 @@ EventMachine.run do
       connection_id = "-1"
 
       sid = @channel.subscribe do |msg|
-        relay = JSON.parse(msg)
+        relay = JSON.parse(msg, :create_additions => false)
         recipient_id, payload = relay
         debug "received the message #{payload.inspect} for #{recipient_id.inspect}"
         debug "I am #{connection_id.inspect}"
@@ -31,7 +31,7 @@ EventMachine.run do
 
       ws.onmessage do |msg|
         debug "received the message: #{msg.inspect}"
-        parsed = JSON.parse(msg)
+        parsed = JSON.parse(msg, :create_additions => false)
         if parsed.first == "register_as"
           connection_id = parsed[1]
           debug "registered as #{connection_id.inspect}"

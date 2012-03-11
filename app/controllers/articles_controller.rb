@@ -4,7 +4,7 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new
+    @article = Article.new_from_json(params[:json])
   end
 
   def create
