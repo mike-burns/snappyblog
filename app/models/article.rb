@@ -11,7 +11,11 @@ class Article < ActiveRecord::Base
     if json
       JSON.parse(json)
     else
-      Article.new
+      new
     end
+  end
+
+  def pending?
+    false
   end
 end
