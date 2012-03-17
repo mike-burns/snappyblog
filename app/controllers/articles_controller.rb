@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
 
   def create
     eventually(CreateAnArticle, params[:article])
-    redirect_to articles_path
+    redirect_to articles_url
   end
 
   def show
