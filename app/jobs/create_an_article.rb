@@ -7,10 +7,10 @@ class CreateAnArticle
     article = Article.new(web_params)
 
     if article.save
-      announcer.key(:article_id).payload(article.id).announce
+      announcer.notify(article_id: article.id)
     else
       json_marshaller = ActiveRecordMarshaller.new(article)
-      announcer.key(:invalid_article).payload(json_marshaller).announce
+      announcer.notify(invalid_article: json_marshaller)
     end
   end
 end

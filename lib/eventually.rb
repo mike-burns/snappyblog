@@ -7,23 +7,10 @@ class ConnectionAnnouncer
     @connection_id = connection_id
   end
 
-  def key(k)
-    builder.key = k
-    self
-  end
-
-  def payload(p)
-    builder.payload = p
-    self
-  end
-
-  def announce
-    if builder.valid?
-      builder.build
-    else
-      raise ArgumentError,
-        "the announcer must have both a key and a payload"
-    end
+  def notify(keys_and_payloads)
+    key = keys_and_payloads.keys.first
+    payload = keys_and_payloads.values.first
+    Announcer.announce(@connection_id, [key, payload])
   end
 
   def to_json(*a)
@@ -44,22 +31,6 @@ class ConnectionAnnouncer
 
   def builder
     @_builder ||= ConnectionAnnouncerBuilder.new(@connection_id)
-  end
-
-  class ConnectionAnnouncerBuilder
-    attr_writer :key, :payload
-
-    def initialize(connection_id)
-      @connection_id = connection_id
-    end
-
-    def valid?
-      !@payload.nil? && !@key.nil?
-    end
-
-    def build
-      Announcer.announce(@connection_id, [@key, @payload])
-    end
   end
 end
 
