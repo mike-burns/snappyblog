@@ -31,3 +31,4 @@ end
 
 require 'announcer'
 Announcer.instance.add_observer(WebSocketAnnouncer.new)
+Announcer.instance.add_observer(EmailAnnouncer.new)

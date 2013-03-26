@@ -26,3 +26,13 @@ class WebSocketAnnouncer
     client.send([connection_id, payload.as_json].to_json)
   end
 end
+
+class EmailAnnouncer
+  def initialize
+  end
+
+  def update(connection_id, payload)
+    user = User.find_by_session_id(connection_id)
+    AnnouncementEmailer.announce(user, payload).deliver
+  end
+end
